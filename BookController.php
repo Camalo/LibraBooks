@@ -18,20 +18,27 @@ class BookController extends AbstractController
         $em=$this->getDoctrine()->getManager();
 
         $books=$em->getRepository(Book::class)->findAll();
+       
+        $categoryes = $em->getRepository(Category::class)->findAll();
 
-        return $this->render('book/index.html.twig', [
-           'books' => $books
+        return $this->render('index.html.twig', [
+           'books' => $books, 'categoryes' => $categoryes
         ]);
+
+        
     }
     /**
      * @Route("/book/{book}", name="one_book")
      */
     // show one row
-    public function show_book() //(Book $book)
+    public function show_book($book)//(Book $book)
     {
-        $book="This is a page of book";
+        $em=$this->getDoctrine()->getManager();
+
+        $book_inf = $em->getRepository(Book::class)->find($book);
+
         return $this->render('book/one_book.html.twig',[
-            'book'=> $book
+            'book'=> $book_inf
             ]);
     }
 }
