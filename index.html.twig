@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BookController!{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h2>List of books</h2>
+        {% for book in books %}
+            <div class="row justify-content-end">
+                <div class="col-3">{{ book.title }} </div>
+                <div class="col-3">{{ book.author }} </div>
+                <div class="col-2">{{ book.category }} </div>
+                <div><a href="{{ path('one_book',{'book': book.id}) }}">подробнее</a></div>
+                <div class="w-100"></div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
