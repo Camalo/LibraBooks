@@ -4,15 +4,17 @@
 
 {% block body %}
 
-    <div class="container"><h2>category</h2></div>
+    <div class="container"><h2>category: {{ category_title.title }}</h2></div>
 
     {% for book in books %}
-
-        <div> {{ book }}book </div>
-        {# <div> {{ book.book_id }}book </div> #}
-
-    {% endfor %}
-
+        <div class="row" style="height: 150px; padding: 20px ">
+            <div class="col-2 text-center">
+                <img src="{{ book.picture }}" alt="book picture" width="120" height="120" />
+            </div>
+            <div class="col-7">
+                <p style="font-size: 20px">{{ book.title }} </p>
+                <div>By {{ book.author }} </div>
+                <div><a href="{{ path('show_book',{'book': book.id}) }}">подробнее</a></div>
+            </div>
         </div>
-    </div>
 {% endblock %}
