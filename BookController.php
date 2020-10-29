@@ -9,30 +9,54 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BookController extends AbstractController
 {
-    /**
-     * @Route("/", name="books")
+   /**
+     * @Route("/", name="homepage")
      */
-    //show all rows
-    public function index(): Response
+    public function homepage(): Response
     {
-        $em=$this->getDoctrine()->getManager();
+        $entity_manager=$this->getDoctrine()->getManager();
 
-        $books=$em->getRepository(Book::class)->findAll();
+        $books=$entity_manager->getRepository(Books::class)->findAll();
+        $categories=$entity_manager->getRepository(Categories::class)->findAll();
 
-        return $this->render('book/index.html.twig', [
-           'books' => $books
+        return $this->render('index.html.twig', [
+            'books' => $books, 'categories' => $categories
         ]);
     }
     /**
-     * @Route("/book/{book}", name="one_book")
+     * @Route("/books/{book}", name="show_book")
      */
-    // show one row
-    public function show_book() //(Book $book)
+    public function show_book($book)
     {
-        $book="This is a page of book";
+        $entity_manager=$this->getDoctrine()->getManager();
+
+        $inf_book=$entity_manager->getRepository(Books::class)->find($book);
+
         return $this->render('book/one_book.html.twig',[
-            'book'=> $book
-            ]);
+            'book'=> $inf_book
+        ]);
+    }
+    /**
+     * @Route("/categories/{category}", name="show_category")
+     */
+    public function show_category($category)
+    {
+        $entity_manager=$this->getDoctrine()->getManager();
+
+        $books_id = $entity_manager->getRepository(BooksInCategories::class)
+            ->findBy(['category_id'=>$category],['book_id'=>'ASC']);
+
+        $id=[];
+        foreach($books_id as $bookid)
+        {
+            $id[]=$bookid->getBookId();
+        }
+
+       // $bb=$entity_manager->getRepository(Books::class)->findBy($id);
+
+        return $this->render('category/category.html.twig',[
+            'books'=> $id
+        ]);
     }
 }
 
