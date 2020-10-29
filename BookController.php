@@ -42,20 +42,26 @@ class BookController extends AbstractController
     public function show_category($category)
     {
         $entity_manager=$this->getDoctrine()->getManager();
-
+        // Get objects from table books_in_categories
         $books_id = $entity_manager->getRepository(BooksInCategories::class)
             ->findBy(['category_id'=>$category],['book_id'=>'ASC']);
 
+        // Get a id of book and put it in array $id
         $id=[];
-        foreach($books_id as $bookid)
+        foreach($books_id as $book_id)
         {
-            $id[]=$bookid->getBookId();
+            $id[]=$book_id->getBookId();
         }
 
-       // $bb=$entity_manager->getRepository(Books::class)->findBy($id);
+        // Get objects from table books where id of book match value in array $id
+        $books=$entity_manager->getRepository(Books::class)
+            ->findBy(['id' => $id]); //=>$id);
+        //Get title of category
+        $category_title=$entity_manager->getRepository(Categories::class)
+            ->findOneBy(['id'=>$category]);
 
         return $this->render('category/category.html.twig',[
-            'books'=> $id
+            'books'=> $books, 'category_title'=>$category_title
         ]);
     }
 }
