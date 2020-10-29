@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BookController!{% endblock %}
+
+{% block body %}
+
+    <div class="container"><h2>category</h2></div>
+
+    {% for book in books %}
+
+        <div> {{ book }}book </div>
+        {# <div> {{ book.book_id }}book </div> #}
+
+    {% endfor %}
+
+        </div>
+    </div>
+{% endblock %}
